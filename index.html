@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Care Kiosk 1.0</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://cklab-edgenc01.ck-collab-engtest.com https://cdnjs.cloudflare.com http://maxcdn.bootstrapcdn.com 'unsafe-inline';" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="css/stylemaster.css">
+    <link rel="stylesheet" href="css/vidplayer.css">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+
+    <script type="text/javascript" src="https://cklab-edgenc01.ck-collab-engtest.com/static/webrtc/js/pexrtc.js"></script>
+    <script type="text/javascript" src="js/feec/pexrtc-wrapper.js"></script>
+    <script type="text/javascript" src="js/feec/feecModule.js"></script>
+    <script type="text/javascript" src="js/library.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    <script type="text/javascript">
+      window.onload = function(){
+    document.getElementById('register').click();
+  }
+    </script>
+
+</head>
+<body>
+
+<input type="checkbox" id="pullDown"/>
+<div id="headerMenu">
+  <p class="select"><label for="audioSource">Microphone: </label><select id="audioSource"></select></p>
+  <p class="select"><label for="audioOutput">Speakers: </label><select id="audioOutput"></select></p>
+  <p class="select"><label for="videoSource">Camera: </label><select id="videoSource"></select></p>
+</div>
+<label id="pullDownLabel" for="pullDown"><p>Settings</p></label>
+
+
+<div class="videoStage" align="center">
+<video width="98%" id="video" playsinline="playsinline" poster="img/hospital.gif" class="mediastream" muted autoplay="autoplay"/>
+</div>
+<br>
+<div class="cornerNav">
+ <ul class="close">
+        <li class="icon-star"></li>
+        <li class="icon-microphone"></li>
+        <li class="icon-volume-up"></li>
+        <li class="icon-off" onclick="window.location='index.html';" id="id_disconnect"></li>
+        <div class="icon-plus-sign-alt" id="btn"></div>
+    </ul>
+</div>
+
+<div class="regForm" style="display: none;">
+    <form>
+    <label class="clabel">Alias </label><input class="cinput" type="text" id="reg_alias" value="carekiosk406@ck-collab-engtest.com" size=40 /><br/>
+    <label class="clabel">Username </label><input class="cinput" type="text" id="reg_username" value="admin" size=40 /><br/>
+    <label class="clabel">Password </label><input class="cinput" type="password" id="reg_password" value="R3g1stR" size=40 /><br/>
+    <label class="clabel">Host </label><input class="cinput" type="text" id="reg_host" value="cklab-edgenc01.ck-collab-engtest.com" size=40 /><br/><br/>
+    <input class="green cinput" id="register" type="button" onclick="reg.register()" value="Register" /><label id="regerror" class="red"></label><br/>
+    </form>
+</div>
+<br><br>
+    <div style="display: none;">
+    <form id="joinleaveform" onsubmit="return user.join()" action="insession.html">
+    <label class="clabel">Conference </label><input class="cinput" type="text" id="conference" value="" size=40 /><br/>
+    <label class="clabel">Worker </label><input class="cinput" type="text" id="worker" value="" size=40 /><br/>
+    <label class="clabel">Pin </label><input class="cinput" type="text" id="pin" value="" size=8 /><br/>
+    <label class="clabel">Display name </label><input class="cinput" type="text" id="display_name" value="" size=40 /><br/>
+    <label class="clabel">Extension </label><input class="cinput" type="text" id="two_stage_dial_ext" value="" size=40 /><br/>
+    <label class="clabel">Start conference if host </label><input class="cinput" type="checkbox" id="start_if_host" /><br/><br/>
+    <input class="green cinput" id="joinleave" type="submit" value="Join Conference" /><label id="joinerror" class="red"></label><br/>
+    </form>
+    </div>
+    <br/>
+
+<div class="hideAll" style="display: none;">
+
+ <div id="myinfomodal" class="infomodal">
+        <div class="infomodal-content">
+            <span class="infomodal-close" onclick="hide_info()">&times;</span>
+            <ul class="infomodal-content-list">
+                <li>Disconnect <i class="fa fa-eject fa-fw red"></i></li>
+                <li>Muted <div class="fa fa-microphone-slash fa-fw red"></div></li>
+                <li>Unmuted <div class="fa fa-microphone fa-fw green"></div></li>
+                <li>StudioSound ON <div class="ia fa fa-headphones fa-fw green"></div></li>
+                <li>StudioSound OFF <div class="ia fa fa-headphones fa-fw red"></div></li>
+                <li>Hold <div class="fa fa-pause fa-fw"></div></li>
+                <li>Resume <div class="fa fa-play fa-fw"></div></li>
+                <li>Locked <div class="fa fa-lock fa-fw red"></div></li>
+                <li>Unlocked <div class="fa fa-unlock fa-fw green"></div></li>
+                <li>Spotlight ON <div class="fa fa-star fa-fw yellow"></div></labliel>
+                <li>Spotlight OFF <div class="fa fa-star-o fa-fw yellow"></div></li>
+                <li>Allowed to see presentation <div class="fa fa-bar-chart fa-fw green"></div></li>
+                <li>Not allowed to see presentation <div class="fa fa-bar-chart fa-fw red"></div></li>
+                <li>Recording <i class="fa fa-dot-circle-o fa-fw red"></i></li>
+                <li>Not Recording <i class="fa fa-dot-circle-o fa-fw"></i></li>
+                <li>Transcribing <i class="fa fa-pencil-square-o fa-fw green"></i></li>
+                <li>Not Transcribing <i class="fa fa-pencil-square-o fa-fw"></i></li>
+                <li>Chair <div class="fa fa-commenting fa-fw"></div></li>
+                <li>Guest <div class="fa fa fa-comment fa-fw"></div></li>
+                <li>Buzz ON <div class="fa fa-hand-paper-o grey fa-fw"></div></li>
+                <li>Buzz OFF <div class="fa fa fa-hand-paper-o grey fa-rotate-180 fa-fw"></div></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="confcontrol" class="hide">
+        <div id="liveviewdiv" class="hide">
+            <fieldset>
+            <legend>RTMP</legend>
+            <table><tr><td><span id="liveviewplayer"></span></td><td><span id="liveviewpresplayer"></span></td></tr></table>
+            <input id="liveview" type="button" onclick="user.liveview()" value="Start live view" />
+            <span id="dual_stream"><input id="dual_stream_sel" type="checkbox" value="dual" />Dual stream</span><br/>
+            <input id="getrtmpaddress" type="button" onclick="user.getrtmpaddress()" value="Get RTMP address" /><br/>
+            <label for="rtmpaddress_main">Main stream: </label>
+            <input id="rtmpaddress_main" size=90 /><br/>
+            <label for="rtmpaddress_presentation" >Presentation stream: </label>
+            <input id="rtmpaddress_presentation" size=90 /><br/>
+            </fieldset>
+        </div>
+        <br/>
+
+        <div id="layoutdiv">
+            <fieldset>
+                <legend>Layout control</legend>
+                <label>Actors </label>
+                <select id="actors" value="everyone">
+                    <option value="everyone">Everyone</option>
+                    <option value="selected">Selected</option>
+                </select>
+
+                <label>Layout </label>
+                <select id="layout" value="1:7">
+                    <option value="1:0">1 main 0 pips</option>
+                    <option value="4:0">Equal layout</option>
+                    <option value="1:7">1 main 7 pips</option>
+                    <option value="1:21">1 main 21 pips</option>
+                    <option value="1:33">1 main 33 pips</option>
+                    <option value="2:21">2 mains 21 pips</option>
+                    <option value="5:7">Auto layout</option>
+                </select>
+
+                <label>Remove self </label>
+                <input type="checkbox" id="removeself" checked/>
+
+                <label>PlusN (off/auto/n)</label>
+                <input id="plusn" list="plusnvalues" value="auto" size=8/>
+                <datalist id="plusnvalues">
+                    <option id="auto_option" value="auto"\>
+                    <option value="off"\>
+                </datalist>
+
+                <label>VAD backfill </label>
+                <input type="checkbox" id="vadbackfill" checked/>
+
+                <label>Overlay text </label>
+                <select id="overlay_text" onchange="update_hostoverlaytext()" value="off">
+                    <option value="off">Off</option>
+                    <option value="auto">Auto</option>
+                    <option value="positional">Positional</option>
+                </select>
+
+                <label>Indicators </label>
+                <select id="indicators" value="auto">
+                    <option value="auto">Auto</option>
+                    <option value="off">Off</option>
+                </select>
+
+                <label>Audience </label>
+                <select id="audience" value="everyone" onchange="update_audience()">
+                    <option value="everyone">Everyone</option>
+                    <option value="hosts">Hosts</option>
+                </select>
+
+                <input id="overridelayout" type="button" onclick="user.overridelayout()" value="Override layout" />
+                <input id="resetlayout" type="button" onclick="user.resetlayout()" value="Reset layout" /><br/>
+
+                <div id="hostpositionaltextdiv" class="hide">
+                    <label>Positional overlay text (comma separated) </label><input id="hostpositionaltext" type="text" value="" size=90/>
+                </div>
+
+                <div id="guestlayout" class="hide">
+                    <label>Actors </label>
+                    <select id="guest_actors" value="everyone">
+                        <option value="everyone">Everyone</option>
+                        <option value="selected">Selected</option>
+                    </select>
+
+                    <label>Layout </label>
+                    <select id="guest_layout" value="1:7">
+                        <option value="1:0">1 main 0 pips</option>
+                        <option value="4:0">Equal layout</option>
+                        <option value="1:7">1 main 7 pips</option>
+                        <option value="1:21">1 main 21 pips</option>
+                        <option value="1:33">1 main 33 pips</option>
+                        <option value="2:21">2 mains 21 pips</option>
+                    </select>
+
+                    <label>Remove self </label>
+                    <input type="checkbox" id="guest_removeself" checked/>
+
+                    <label>PlusN (off/auto/n)</label>
+                    <input id="guest_plusn" list="guest_plusnvalues" value="auto" size=8/>
+                    <datalist id="guest_plusnvalues">
+                        <option value="auto"\><option value="off"\>
+                    </datalist>
+
+                    <label>VAD backfill </label>
+                    <input type="checkbox" id="guest_vadbackfill" checked/>
+
+                    <label>Overlay text </label>
+                    <select id="guest_overlay_text" onchange="update_guestoverlaytext()" value="off">
+                        <option value="off">Off</option>
+                        <option value="auto">Auto</option>
+                        <option value="positional">Positional</option>
+                    </select>
+
+                    <label>Indicators </label>
+                    <select id="guest_indicators" value="auto">
+                        <option value="off">Off</option>
+                        <option value="auto">Auto</option>
+                    </select>
+
+                    <label>Audience </label>
+                    <select id="guest_audience" value="guests">
+                        <option value="guests">Guests</option>
+                    </select>
+
+                    <div id="guestpositionaltextdiv" class="hide">
+                        <label>Positional overlay text (comma separated) </label>
+                        <input id="guestpositionaltext" type="text" value="" size=90/>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <br/>
+
+        <div id="transformdiv">
+            <fieldset>
+            <legend>Layout Transformation</legend>
+            <label>Layout / Host layout </label>
+            <select id="tl_layout" value="">
+                <option value="">Unset</option>
+                <option value="1:0">1 main 0 pips</option>
+                <option value="4:0">Equal layout</option>
+                <option value="1:7">1 main 7 pips</option>
+                <option value="1:21">1 main 21 pips</option>
+                <option value="1:33">1 main 33 pips</option>
+                <option value="2:21">2 mains 21 pips</option>
+                <option value="5:7">Auto layout</option>
+            </select>
+
+            <label>Guest layout (lecture mode only) </label>
+            <select id="tl_guest_layout" value="">
+                <option value="">Unset</option>
+                <option value="1:0">1 main 0 pips</option>
+                <option value="4:0">Equal layout</option>
+                <option value="1:7">1 main 7 pips</option>
+                <option value="1:21">1 main 21 pips</option>
+                <option value="1:33">1 main 33 pips</option>
+                <option value="2:21">2 mains 21 pips</option>
+                <option value="5:7">Auto layout</option>
+            </select>
+
+            <label>Recording indicator </label>
+            <select id="tl_recording_indicator" value="">
+                <option value="">Unset</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+            </select>
+
+            <label>Streaming indicator </label>
+            <select id="tl_streaming_indicator" value="">
+                <option value="">Unset</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+            </select>
+
+            <label>Transcribing indicator </label>
+            <select id="tl_transcribing_indicator" value="">
+                <option value="">Unset</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+            </select>
+
+            <label>Text overlay </label>
+            <select id="tl_enable_overlay_text" value="" onchange="update_tl_positionaltext()">
+                <option value="">Unset</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+                <option value="positional">Positional</option>
+            </select>
+
+            <label>Active speaker </label>
+            <select id="tl_enable_active_speaker_indication" value="">
+                <option value="">Unset</option>
+                <option value="on">On</option>
+                <option value="off">Off</option>
+            </select>
+
+            <div id="tl_positionaltextdiv" class="hide">
+                <label>Positional overlay text (comma separated) </label><input id="tl_positionaltext" type="text" value="" size=90/>
+            </div>
+
+            <input id="transformlayout" type="button" onclick="user.transformlayout()" value="Transform layout" />
+            <input id="resettransformlayout" type="button" onclick="user.resettransformlayout()" value="Reset layout transformation" /><br/>
+
+            </fieldset>
+        </div>
+        <br/>
+
+        <div id="dialdiv">
+            <fieldset>
+            <legend>Dial out</legend>
+            <label>Protocol </label>
+            <select id="protocol" value="auto">
+                <option value="auto">Auto</option>
+                <option value="sip">SIP</option>
+                <option value="h323">H.323</option>
+                <option value="mssip">Lync</option>
+                <option value="rtmp">RTMP</option>
+            </select>
+
+            <label>Local alias </label>
+            <input id="localalias" type="text" value="" size=15/>
+
+            <label>Local display name </label>
+            <input id="localdisplayname" type="text" value="" size=15/>
+
+            <label>Remote alias </label>
+            <input id="remotealias" type="text" value="" size=15/>
+
+            <label>Role </label>
+            <select id="role" value="guest">
+                <option value="guest">Guest</option>
+                <option value="host">Host</option>
+            </select>
+
+            <label>Prefer IPv6 </label>
+            <input type="checkbox" id="prefer_ipv6"/>
+
+            <input id="dial" type="button" onclick="user.dial()" value="Dial" /><br/>
+
+            <a target="_blank" href="http://yt.pexip.com">Create a remotealias for YouTube streaming</a>
+            </fieldset>
+        </div>
+        <br/>
+
+        <div id="rtspdiv">
+            <fieldset>
+            <legend>RTSP</legend>
+            <input id="rtspaddress" size=90 value="rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov"/><br/>
+            <input id="rtspjoin" type="button" onclick="user.rtspjoin()" value="Create RTSP call" />
+            <input id="rtspleave" type="button" onclick="user.rtspleave()" value="Destroy RTSP call" disabled="true" />
+            </fieldset>
+        </div>
+        <br/>
+
+        <div id="chatdiv" class="hide">
+            <fieldset>
+            <legend>Chat</legend>
+            <form onsubmit="return user.send_message()">
+            <div id="chatbox" class="chatbox"></div><br/>
+            <input id="chatinput" type="text" size=200 />
+            <input id="chatsend" type="button" onclick="user.send_message()" value="Send"/>
+            </form>
+            </fieldset>
+        </div>
+        <br/>
+
+        <img id="presentation" width=400 height=200 class="hide">
+
+        <canvas id="layout_canvas" width=280 height=200>
+        </canvas>
+        <br/>
+
+        <ul id="waitingroom" class="roster_list">
+            <li><b>Waiting Room</b></li>
+        </ul>
+
+        <ul id="rosterlist" class="roster_list">
+            <li>
+                <i id="start_conf" onclick="user.start_conference()"></i>
+                <i id="conflock" onclick="user.lock()"></i>
+                <i id="guestsmuted" onclick="user.muteallguests()"></i>
+                <i id="disconnectall" onclick="user.disconnect_all()"></i>
+                <b>Conference</b>
+            </li>
+        </ul>
+
+        <ul id="buzzing" class="roster_list">
+            <li>
+                <i id="clearallbuzz" onclick="user.clearallbuzz()"></i>
+                <b>Buzzing</b>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Video Controls JS --> 
+
+<script type="text/javascript">
+
+(function() {
+  
+  $('li').text('');
+  
+    var co = $('ul').find('li').each(function(){
+    var $this = $(this),
+        $author = $this.data('item');
+    
+    var author = $('<span></span>', {
+      class: 'item-close',
+      text: $author
+    }).appendTo( $this.closest('li') );
+      
+  });
+  
+  var $close = $('.close'),
+      $pop = $('.pop'),
+      $iconvidon = $('.icon-star'),
+      $iconvidoff = $('.icon-star-half-full'),
+      $iconmicon = $('.icon-microphone'),
+      $iconmicoff = $('.icon-microphone-off'),
+      $iconspeakerson = $('.icon-volume-up'),
+      $iconspeakersoff = $('.icon-volume-off'),
+      $icontrayclose = $('.icon-resize-small'),
+      $icontrayopen = $('.icon-plus-sign-alt'),
+      $iconbox = $('.icon-box'),
+      $itemclose = $('.item-close'),
+      $button = $('#btn');
+  
+    $($button).on('click', function() {
+        $($close, $pop).toggleClass('close pop');
+        $($iconvidon, $iconvidoff).toggleClass('icon-star icon-star-half-full');
+        $($iconmicon, $iconmicoff).toggleClass('icon-microphone icon-microphone-off');
+        $($iconspeakerson, $iconspeakersoff).toggleClass('icon-volume-up icon-volume-off');
+        $($icontrayopen, $icontrayclose).toggleClass('icon-plus-sign-alt icon-resize-small');
+        $($itemclose).toggleClass('item-close item-open');
+        $($button).toggleClass('active');
+        
+    });
+})();
+</script>
+
+<!-- Select Media Devices in Settings -->
+
+<script type="text/javascript">
+
+'use strict';
+
+const videoElement = document.querySelector('videoView');
+const audioInputSelect = document.querySelector('select#audioSource');
+const audioOutputSelect = document.querySelector('select#audioOutput');
+const videoSelect = document.querySelector('select#videoSource');
+const selectors = [audioInputSelect, audioOutputSelect, videoSelect];
+
+audioOutputSelect.disabled = !('sinkId' in HTMLMediaElement.prototype);
+
+function gotDevices(deviceInfos) {
+  // Handles being called several times to update labels. Preserve values.
+  const values = selectors.map(select => select.value);
+  selectors.forEach(select => {
+    while (select.firstChild) {
+      select.removeChild(select.firstChild);
+    }
+  });
+  for (let i = 0; i !== deviceInfos.length; ++i) {
+    const deviceInfo = deviceInfos[i];
+    const option = document.createElement('option');
+    option.value = deviceInfo.deviceId;
+    if (deviceInfo.kind === 'audioinput') {
+      option.text = deviceInfo.label || `microphone ${audioInputSelect.length + 1}`;
+      audioInputSelect.appendChild(option);
+    } else if (deviceInfo.kind === 'audiooutput') {
+      option.text = deviceInfo.label || `speaker ${audioOutputSelect.length + 1}`;
+      audioOutputSelect.appendChild(option);
+    } else if (deviceInfo.kind === 'videoinput') {
+      option.text = deviceInfo.label || `camera ${videoSelect.length + 1}`;
+      videoSelect.appendChild(option);
+    } else {
+      console.log('Some other kind of source/device: ', deviceInfo);
+    }
+  }
+  selectors.forEach((select, selectorIndex) => {
+    if (Array.prototype.slice.call(select.childNodes).some(n => n.value === values[selectorIndex])) {
+      select.value = values[selectorIndex];
+    }
+  });
+}
+
+navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
+
+// Attach audio output device to video element using device/sink ID.
+function attachSinkId(element, sinkId) {
+  if (typeof element.sinkId !== 'undefined') {
+    element.setSinkId(sinkId)
+        .then(() => {
+          console.log(`Success, audio output device attached: ${sinkId}`);
+        })
+        .catch(error => {
+          let errorMessage = error;
+          if (error.name === 'SecurityError') {
+            errorMessage = `You need to use HTTPS for selecting audio output device: ${error}`;
+          }
+          console.error(errorMessage);
+          // Jump back to first output device in the list as it's the default.
+          audioOutputSelect.selectedIndex = 0;
+        });
+  } else {
+    console.warn('Browser does not support output device selection.');
+  }
+}
+
+function changeAudioDestination() {
+  const audioDestination = audioOutputSelect.value;
+  attachSinkId(videoElement, audioDestination);
+}
+
+function gotStream(stream) {
+  window.stream = stream; // make stream available to console
+  videoElement.srcObject = stream;
+  // Refresh button list in case labels have become available
+  return navigator.mediaDevices.enumerateDevices();
+}
+
+function handleError(error) {
+  console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+}
+
+function start() {
+  if (window.stream) {
+    window.stream.getTracks().forEach(track => {
+      track.stop();
+    });
+  }
+  const audioSource = audioInputSelect.value;
+  const videoSource = videoSelect.value;
+  const constraints = {
+    audio: {deviceId: audioSource ? {exact: audioSource} : undefined},
+    video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+  };
+  navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
+}
+
+audioInputSelect.onchange = start;
+audioOutputSelect.onchange = changeAudioDestination;
+
+videoSelect.onchange = start;
+
+start();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+body {
+  align-items: center;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+}
+
+.form {
+  background-color: #15172b;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  width: 320px;
+}
+
+.title {
+  color: #eee;
+  font-family: sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.subtitle {
+  color: #eee;
+  font-family: sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.input-container {
+  height: 50px;
+  position: relative;
+  width: 100%;
+}
+
+.ic1 {
+  margin-top: 40px;
+}
+
+.ic2 {
+  margin-top: 30px;
+}
+
+.input {
+  background-color: #303245;
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #eee;
+  font-size: 18px;
+  height: 100%;
+  outline: 0;
+  padding: 4px 20px 0;
+  width: 100%;
+}
+
+.cut {
+  background-color: #15172b;
+  border-radius: 10px;
+  height: 20px;
+  left: 20px;
+  position: absolute;
+  top: -20px;
+  transform: translateY(0);
+  transition: transform 200ms;
+  width: 76px;
+}
+
+.cut-short {
+  width: 50px;
+}
+
+.input:focus ~ .cut,
+.input:not(:placeholder-shown) ~ .cut {
+  transform: translateY(8px);
+}
+
+.placeholder {
+  color: #65657b;
+  font-family: sans-serif;
+  left: 20px;
+  line-height: 14px;
+  pointer-events: none;
+  position: absolute;
+  transform-origin: 0 50%;
+  transition: transform 200ms, color 200ms;
+  top: 20px;
+}
+
+.input:focus ~ .placeholder,
+.input:not(:placeholder-shown) ~ .placeholder {
+  transform: translateY(-30px) translateX(10px) scale(0.75);
+}
+
+.input:not(:placeholder-shown) ~ .placeholder {
+  color: #808097;
+}
+
+.input:focus ~ .placeholder {
+  color: #ff4f1f;
+}
+
+.submit {
+  background-color: #08d;
+  border-radius: 12px;
+  border: 0;
+  box-sizing: border-box;
+  color: #eee;
+  cursor: pointer;
+  font-size: 18px;
+  height: 50px;
+  margin-top: 38px;
+  // outline: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.submit:active {
+  background-color: #06b;
+}
+
+.presentation_on {
+            display: block;
+        }
+        .participant_uri {
+            display: inline-block;
+            padding: 0.2em;
+            background-color: none;
+        }
+        .participant_uri_speaking {
+            display: inline-block;
+            padding: 0.2em;
+            background-color: lightgrey;
+        }
+
+        .roster_list {
+            list-style-type: none;
+            display: inline-block;
+            width: 32em;
+            float: left;
+            text-align: center;
+            /* border: 1px solid; */
+            padding: 10px 10px;
+        }
+        .roster_entry {
+            text-align: left;
+            border:1px solid gray;
+            padding: 3px;
+            margin: 3px;
+        }
+        .participant_action {
+            /*padding: 0.2em;*/
+        }
+        .conference_action {
+            display: inline-block;
+            /* float: left; */
+            /*padding: 1em;*/
+        }
+        .hide {
+            display: none;
+        }
+
+        .currentoverlaytext {
+        background-color: #000000;
+        color: #FFFFFF;
+        border: 0px;
+        padding: 2px;
+        text-align:center;
+        }
+        .clabel{
+            display: inline-block;
+            float: left;
+            clear: left;
+            width: 170px;
+            text-align: left;
+            font-weight: bold;
+            padding-right: 5px;
+        }
+        .cinput {
+        display: inline-block;
+        float: left;
+        }
+
+        .ia {
+        display: inline-block;
+        float: left;
+        }
+
+        #fixed-div {
+            position: fixed;
+            top: 1em;
+            right: 1em;
+        }
+
+        .colcontainer{
+        column-count: 2;
+        column-gap: 20px;
+        -moz-column-count: 2;
+        -moz-column-gap: 20px;
+        -webkit-column-count: 2;
+        -webkit-column-gap: 20px;
+        }
+
+        .green {
+        color:#198b16;
+        }
+        .pexorange {
+        color:#F28630;
+        }
+
+        .red {
+        color:#FF0000;
+        }
+
+        .yellow {
+        color:#FFDB00;
+        }
+
+        .disabled_action {
+            color: lightgrey;
+        }
+
+        .chatbox {
+            font-family:tahoma;
+            font-size:12px;
+            color:black;
+            border: 1px teal solid;
+            height: 225px;
+            width: 100%;
+            overflow: scroll;
+            float:left;
+        }
+
+        .message {
+        }
+
+        .message_origin {
+            background-color: lightgrey;
+            /*display: inline-block;*/
+            /*padding-right: 3px;*/
+        }
+
+        #layout_canvas {
+            border: 1px solid black;
+        }
+
+        .autocomplete-suggestions {
+            text-align: left; cursor: default; border: 1px solid #ccc; border-top: 0; background: #fff; box-shadow: -1px 1px 3px rgba(0,0,0,.1);
+
+            /* core styles should not be changed */
+            position: absolute; display: none; z-index: 9999; max-height: 254px; overflow: hidden; overflow-y: auto; box-sizing: border-box;
+        }
+        .autocomplete-suggestion { position: relative; padding: 0 .6em; line-height: 23px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 1.02em; color: #333; }
+        .autocomplete-suggestion b { font-weight: normal; color: #1f8dd6; }
+        .autocomplete-suggestion.selected { background: #f0f0f0; }
+
+        .infomodal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .infomodal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 300px;
+        }
+
+        .infomodal-content-list {
+            list-style-type: none;
+        }
+
+        /* The Close Button */
+        .infomodal-close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        }
+
+        .infomodal-close:hover,
+        .infomodal-close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+        }
