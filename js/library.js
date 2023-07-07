@@ -48,7 +48,8 @@ function initialise(
   userbw,
   name,
   userpin,
-  registration_token
+  registration_token,
+  oneTimeToken
 ) {
   video = document.getElementById("video");
   console.log("Bandwidth: " + userbw);
@@ -59,6 +60,7 @@ function initialise(
 
   rtc = new PexRTC();
   rtc.registration_token = registration_token;
+  rtc.oneTimeToken = oneTimeToken;
   //console.log('LOOK HERE', videoSelect.value);
   rtc.fecc_supported = true;
   rtc.video_source = videoSelect.value;
@@ -2304,8 +2306,9 @@ var reg = {
       this.node,
       incoming_data["conference_alias"],
       undefined,
-      "Room 406",
+      "carekiosk@ck-collab-engtest.com",
       undefined,
+      reg.token,
       incoming_data["token"]
     );
 
